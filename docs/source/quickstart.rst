@@ -44,30 +44,8 @@ and runs evaluations on these estimated quantities (against the `true` values wh
 Use the ``--help`` argument to look for configurable options. You can select the no. of distinct gaussian blobs, the no. of images,
 the resolution of the (square) images generated etc.
 
-3. Reconstructing a mean volume with covariance
-***********************************************
 
-The ``cov3d`` command takes in a ``*.star`` file, processes the images (``*.mrcs`` files) found in the starfile, and runs the ASPIRE pipeline
-to determine the estimated mean volume and estimated covariance on the mean volume. No results are saved currently, but this command is
-a good way to exercise most parts of the ASPIRE pipeline.
-
-For example, to run the command on a sample data included in ASPIRE:
-
-.. code-block:: console
-
-    python -m aspire cov3d --starfile /path/to/aspire/data/sample_relion_data.star --pixel_size 1.338 --max_resolution 8 --cg_tol 0.2
-
-.. note::
-
-    Pay special attention to the flags specified in the example above. The ``--max_resolution 8``
-    flag down-samples images to 8x8 pixels (needed otherwise you may run out of memory, and/or the script may take way
-    too long to execute). ``--cg_tol 0.2`` sets very liberal (and unrealistic) limits on optimization convergence
-    tolerance, which is needed for such a small dataset. For real datasets, you typically *do not* want to override this
-    parameter.
-
-Use the ``--help`` argument to look for configurable options.
-
-4. Crop a set of projections
+3. Crop a set of projections
 ****************************
 
 The ``crop`` command crops a stack of projections of an mrc file to squares of a given size (in pixels). For example,

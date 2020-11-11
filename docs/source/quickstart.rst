@@ -16,17 +16,23 @@ Currently, the following operations can be run with ASPIRE:
 1. Particle-Picking
 *******************
 
-The ``apple`` command takes in a folder of one or more ``*.mrc`` files, picks particles using the Apple-Picker algorithm described at
+The ``apple`` command takes a path to a single file or a folder of one or more ``*.mrc`` files, picks particles using the Apple-Picker algorithm described at
 :cite:`DBLP:journals/corr/abs-1802-00469`, and generates ``*.star`` files, one for each ``*.mrc`` file processed, at an output folder location.
 
-For example, to run the command on sample data included in ASPIRE (a single ``sample.mrc`` file provided from the 5.3 GB
-`Beta-galactosidase Falcon-II micrographs EMPIAR dataset <https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/10017/>`_) and save results to a
-``particles`` folder:
+We have included with the Git repo a single example file (``sample.mrc``) from `Beta-galactosidase Falcon-II micrographs EMPIAR dataset <https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/10017/>`_), from the larger 5.3 GB real world dataset. From the root of this repo we would run the following command to compute a single file particle picking, storing the results in a ``particles`` folder:
 
 .. code-block:: console
 
-    mkdir apple_output
-    python -m aspire apple --mrc_file /path/to/aspire/data/sample.mrc --output_dir particles
+    # Note output_dir will be created if it does not exist.
+    python -m aspire apple --mrc_file tests/saved_test_data/sample.mrc --output_dir particles
+
+Processing a larger data set is similar, but we need to ensure we have space for input and output data which can be quite large. We also will use ``--mrc_dir`` for the input path.
+Let's assume I have downloaded the entire collection of ``10017`` mrc files to ``/scratch/10017``, and I would like to output to ``/scratch/10017_particles``.  That command would look like:
+
+.. code-block:: console
+
+    python -m aspire apple --mrc_dir /scratch/10017/data/ --output_dir /scratch/10017/particles
+
 
 Use the ``--help`` argument with the command to see the several options associated with this command.
 

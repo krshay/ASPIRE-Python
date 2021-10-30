@@ -137,7 +137,9 @@ class PSWFBasis2D(Basis):
         self.alpha_nn = np.array(alpha_all)
         self.max_ns = max_ns
 
-        self.samples = self._evaluate_pswf2d_all(self._r_disk, self._theta_disk, max_ns)
+        # SK
+        self.samples, self.phase_part, self.radial_part = self._evaluate_pswf2d_all(self._r_disk, self._theta_disk, max_ns)
+        
         self.ang_freqs = np.repeat(np.arange(len(max_ns)), max_ns).astype("float")
         self.rad_freqs = np.concatenate([range(1, i + 1) for i in max_ns]).astype(
             "float"
@@ -256,6 +258,8 @@ class PSWFBasis2D(Basis):
         """
         max_ns_ints = [int(max_n) for max_n in max_ns]
         out_mat = []
+        phase_mat = []
+        radial_mat = []
         for i, max_n in enumerate(max_ns_ints):
             if max_n < 1:
                 continue
@@ -269,10 +273,13 @@ class PSWFBasis2D(Basis):
             )
 
             pswf_n_n_mat = phase_part * r_radial_part_mat.T
-
+            # SK
+            phase_mat.extend(np.tile(phase_part, (max_n, 1)))
+            radial_mat.extend(r_radial_part_mat.T)
             out_mat.extend(pswf_n_n_mat)
         out_mat = np.array(out_mat, dtype=complex_type(self.dtype)).T
-        return out_mat
+        # SK
+        return out_mat, phase_mat, radial_mat
 
     def pswf_func2d(self, big_n, n, bandlimit, phi_approximate_error, r, w):
         """
